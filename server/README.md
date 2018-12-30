@@ -16,5 +16,6 @@ $ pip install flask flask-cors newsapi-python python-twitter requests
 
 ## Running the server
 ```
+$ . venv/bin/activate
 $ ./run.sh
 ```
