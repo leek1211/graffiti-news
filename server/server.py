@@ -12,8 +12,12 @@ CORS(app)
 
 @app.route('/graffiti')
 def get_graffiti():
-  trend_words = get_trend_words()
-  return jsonify(trends=get_giphy(trend_words)), 200
+  lang = request.args.get('lang')
+  if lang == None:
+    lang = 'en'
+
+  trend_words = get_trend_words(lang)
+  return jsonify(trends=get_giphy(trend_words, lang)), 200
 
 @app.route('/articles')
 def get_articles():
@@ -21,11 +25,15 @@ def get_articles():
   if keyword == None:
     msg = "Wrong keyword input %s" % keyword
     return jsonify(message=msg), 400
-  
-  giphy_response = get_giphy([keyword])
+
+  lang = request.args.get('lang')
+  if lang == None:
+    lang = 'en'
+
+  giphy_response = get_giphy([keyword], lang)
   if len(giphy_response) == 0:
     return jsonify(message = 'no matching images found'), 400
   images = giphy_response[0]['images']
-  articles = search_articles(keyword)
+  articles = search_articles(keyword, lang)
   return jsonify(images = images, articles=articles), 200
 
