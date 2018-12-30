@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-const API = "http://10.0.1.38:5000/graffiti";
+const API = "http://localhost:5000/graffiti";
 
 class NewsBoard extends Component {
     constructor(props){

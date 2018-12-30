@@ -10,7 +10,7 @@
 $ python3 -m venv venv
 $ . venv/bin/activate
 $ pip install --upgrade pip
-$ pip install flask, flask-cors, newsapi-python, python-twitter, requests
+$ pip install flask flask-cors newsapi-python python-twitter requests
 ```
 
 ## Running the server
