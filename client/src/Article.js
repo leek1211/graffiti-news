@@ -1,38 +1,39 @@
 import React, { Component } from "react";
-import Image from "./Image";
 
-const API = "http://localhost:5000/graffiti";
+const API = "http://localhost:5000/articles?keyword=";
 
-class NewsBoard extends Component {
+class Article extends Component {
     constructor(props){
         super(props);
-        
+
         this.state = {
             error: null,
             isLoading: false,
-            trends: []
+            articles: [],
+            images: []
         };
-        //this.imageOnClick = this.imageOnClick.bind(this);
     }
-    
+
     componentDidMount() {
         this.setState({isLoading: true});
         console.log("component did mount");
-        
-        fetch(API)
+        fetch(API + this.props.location.search)
             .then((res) => {
                 if(res.status === 200){
                     console.log("SUCCESS");
                     return res.json();
                 }else{
+                    console.log(res);
                     console.log("SOMETHING WENT WRONG");
                 }
             })
             .then(
                 (result) => {
+                    console.log("result: " + JSON.stringify(result));
                     this.setState({
                         isLoading: false,
-                        trends: result.trends
+                        articles: result.articles,
+                        images: result.images
                     });
                     console.log(this.state.isLoading);
                     console.log("DATA STORED");
@@ -44,15 +45,12 @@ class NewsBoard extends Component {
                         error
                     });
                 }
-             )
+            )
     }
 
-    /*imageOnClick(keyword) {
-        console.log(keyword);
-    }*/
-
     render() {
-        const {error, isLoading, trends} = this.state;
+        const {error, isLoading, articles, images} = this.state;
+        console.log(this.state);
         if(error) {
             return <div>Error: {error.message}</div>;
          }
@@ -60,22 +58,18 @@ class NewsBoard extends Component {
             return <div>Loading...</div>;
         } else {
             return (
-                
-                <div className = "NewsBoardMain">
-                    <div className = "NewsBoard Header">
-                        <h1>Graffiti News</h1>
-                    </div>
-                    {trends && trends.map(trend => 
-                        <Image key={trend.keyword} 
-                            images={trend.images} 
-                            keyword={trend.keyword} 
-                            /*onClick={() => this.imageOnClick(trend.keyword)}*/ />
-                    )}
-                </div>    
+                <div className="Article Header">
+                    <h1>Article</h1>
+                    <ul>
+                        {articles && articles.map(article =>
+                                <li>{article.title}</li>)
+                        }
+                    </ul>
+                </div>
             );
         }
     }
-
+    
 }
 
-export default NewsBoard;
+export default Article;
