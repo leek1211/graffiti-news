@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-const API = "http://localhost:5000/articles?keyword=";
+const API = "http://localhost:5000/articles";
 
 class Article extends Component {
     constructor(props){
