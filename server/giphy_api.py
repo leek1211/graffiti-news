@@ -50,13 +50,33 @@ def get_keyword_giphy(keyword, lang):
   
   return {'images': images, 'keyword': keyword}
 
+def get_giphy_image_from_translate(keyword, lang):
+  payload = {
+    'api_key': GIPHY_API_KEY,
+    'lang': lang,
+  }
+  payload['s'] = keyword
+  url = 'http://api.giphy.com/v1/gifs/translate'
+  response_body = requests.get(url, params = payload).json()
+  obj = response_body['data']
+  return {
+    'url': obj['images']['original']['url'],
+    'height': obj['images']['original']['height'],
+    'width': obj['images']['original']['width']
+  }
+  
 '''
 Use GIPHY API to find the gif urls of the given words
 '''
 def get_giphy(keywords, lang):
   ret = []
+  
   for keyword in keywords:
     elem = get_keyword_giphy(keyword, lang)
+    translated = get_giphy_image_from_translate(keyword, lang)
+
+    elem['images'] = [translated] + elem['images']
+    
     if len(elem['images']) >= 5:
       ret.append(elem)
 
@@ -64,4 +84,3 @@ def get_giphy(keywords, lang):
       break
 
   return ret
-

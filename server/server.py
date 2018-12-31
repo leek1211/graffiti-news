@@ -3,9 +3,9 @@ from flask import request
 from flask import jsonify
 from flask_cors import CORS
 
-from giphy_api import get_giphy
 from twitter_api import get_trend_words
 from news_api import search_articles
+from giphy_api import get_giphy as get_gifs
 
 app = Flask(__name__)
 CORS(app)
@@ -17,7 +17,7 @@ def get_graffiti():
     lang = 'en'
 
   trend_words = get_trend_words(lang)
-  return jsonify(trends=get_giphy(trend_words, lang)), 200
+  return jsonify(trends=get_gifs(trend_words, lang)), 200
 
 @app.route('/articles')
 def get_articles():
@@ -30,7 +30,7 @@ def get_articles():
   if lang == None:
     lang = 'en'
 
-  giphy_response = get_giphy([keyword], lang)
+  giphy_response = get_gifs([keyword], lang)
   if len(giphy_response) == 0:
     return jsonify(message = 'no matching images found'), 400
   images = giphy_response[0]['images']
