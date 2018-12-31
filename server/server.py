@@ -17,7 +17,7 @@ def get_graffiti():
     if lang == None:
       lang = 'en'
 
-    trend_words = get_trend_words(lang)[:3]
+    trend_words = get_trend_words(lang)[:5]
     return jsonify(trends=get_gifs(trend_words, lang)), 200
   except:
     return jsonify(message = 'internal server error'), 500
