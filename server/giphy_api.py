@@ -59,7 +59,6 @@ def get_giphy_image_from_translate(keyword, lang):
   payload['s'] = keyword
   url = 'http://api.giphy.com/v1/gifs/translate'
   response_body = requests.get(url, params = payload).json()
-  print(response_body)
   obj = response_body['data']
   return {
     'url': obj['images']['original']['url'],
