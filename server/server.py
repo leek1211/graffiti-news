@@ -16,7 +16,7 @@ def get_graffiti():
   if lang == None:
     lang = 'en'
 
-  trend_words = get_trend_words(lang)
+  trend_words = get_trend_words(lang)[:3]
   return jsonify(trends=get_gifs(trend_words, lang)), 200
 
 @app.route('/articles')

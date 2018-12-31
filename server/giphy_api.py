@@ -3,20 +3,18 @@ import requests
 from config import *
 
 def get_channel_names(keyword):
-  # channel_search_api_url = 'https://giphy.com/api/v1/channels-search/search/channel_v2'
-  # channel_search_result = requests.get(channel_search_api_url, params = {'q': keyword}).json()
-  # channel_names = []
-  # for h in channel_search_result['hits']:
-  #   channel_names.append(h['name'])
+  channel_search_api_url = 'https://giphy.com/api/v1/channels-search/search/channel_v2'
+  channel_search_result = requests.get(channel_search_api_url, params = {'q': keyword}).json()
+  channel_names = []
+  for h in channel_search_result['hits']:
+    channel_names.append(h['name'])
   
-  # if len(channel_names) <= 2:
-  #   channel_names.append("")
-  # else:
-  #   channel_names = [""]
+  if len(channel_names) <= 2:
+    channel_names.append("")
+  else:
+    channel_names = [""]
 
-  # return channel_names
-  return [""]
-
+  return channel_names
 
 def get_keyword_giphy(keyword, lang):
   max_image_size = 10
@@ -38,6 +36,9 @@ def get_keyword_giphy(keyword, lang):
     
     payload['q'] = keyword + ' ' + chn
     response_body = requests.get(url, params = payload).json()
+    
+    if response_body['data'] == None:
+      print(keyword, response_body)
     data = response_body['data'][:sz]
     
     for obj in data:
@@ -74,9 +75,14 @@ def get_giphy(keywords, lang):
   
   for keyword in keywords:
     elem = get_keyword_giphy(keyword, lang)
-    translated = get_giphy_image_from_translate(keyword, lang)
+    translated = []
+    
+    try:
+      translated.append(get_giphy_image_from_translate(keyword, lang))
+    except:
+      print ('api limit exceed in translate api')
 
-    elem['images'] = [translated] + elem['images']
+    elem['images'] = translated + elem['images']
     
     if len(elem['images']) >= 5:
       ret.append(elem)
