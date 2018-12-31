@@ -12,28 +12,34 @@ CORS(app)
 
 @app.route('/graffiti')
 def get_graffiti():
-  lang = request.args.get('lang')
-  if lang == None:
-    lang = 'en'
+  try:
+    lang = request.args.get('lang')
+    if lang == None:
+      lang = 'en'
 
-  trend_words = get_trend_words(lang)[:3]
-  return jsonify(trends=get_gifs(trend_words, lang)), 200
+    trend_words = get_trend_words(lang)[:3]
+    return jsonify(trends=get_gifs(trend_words, lang)), 200
+  except:
+    return jsonify(message = 'internal server error'), 500
 
 @app.route('/articles')
 def get_articles():
-  keyword = request.args.get('keyword')
-  if keyword == None:
-    msg = "Wrong keyword input %s" % keyword
-    return jsonify(message=msg), 400
+  try:
+    keyword = request.args.get('keyword')
+    if keyword == None:
+      msg = "Wrong keyword input %s" % keyword
+      return jsonify(message=msg), 400
 
-  lang = request.args.get('lang')
-  if lang == None:
-    lang = 'en'
+    lang = request.args.get('lang')
+    if lang == None:
+      lang = 'en'
 
-  giphy_response = get_gifs([keyword], lang)
-  if len(giphy_response) == 0:
-    return jsonify(message = 'no matching images found'), 400
-  images = giphy_response[0]['images']
-  articles = search_articles(keyword, lang)
-  return jsonify(images = images, articles=articles), 200
+    giphy_response = get_gifs([keyword], lang)
+    if len(giphy_response) == 0:
+      return jsonify(message = 'no matching images found'), 400
+    images = giphy_response[0]['images']
+    articles = search_articles(keyword, lang)
+    return jsonify(images = images, articles=articles), 200
+  except:
+    return jsonify(message = 'internal server error'), 500
 

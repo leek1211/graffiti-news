@@ -4,6 +4,7 @@ from config import *
 
 def get_channel_names(keyword):
   channel_search_api_url = 'https://giphy.com/api/v1/channels-search/search/channel_v2'
+  # print('Sending request ', keyword)
   channel_search_result = requests.get(channel_search_api_url, params = {'q': keyword}).json()
   channel_names = []
   for h in channel_search_result['hits']:
@@ -35,6 +36,7 @@ def get_keyword_giphy(keyword, lang):
     sz = int(sz)
     
     payload['q'] = keyword + ' ' + chn
+    # print('Sending request ', keyword)
     response_body = requests.get(url, params = payload).json()
     
     if response_body['data'] == None:
@@ -59,6 +61,7 @@ def get_giphy_image_from_translate(keyword, lang):
   }
   payload['s'] = keyword
   url = 'http://api.giphy.com/v1/gifs/translate'
+  # print('Sending request ', keyword)
   response_body = requests.get(url, params = payload).json()
   obj = response_body['data']
   return {
