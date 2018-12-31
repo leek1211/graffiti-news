@@ -3,18 +3,19 @@ import requests
 from config import *
 
 def get_channel_names(keyword):
-  channel_search_api_url = 'https://giphy.com/api/v1/channels-search/search/channel_v2'
-  channel_search_result = requests.get(channel_search_api_url, params = {'q': keyword}).json()
-  channel_names = []
-  for h in channel_search_result['hits']:
-    channel_names.append(h['name'])
+  # channel_search_api_url = 'https://giphy.com/api/v1/channels-search/search/channel_v2'
+  # channel_search_result = requests.get(channel_search_api_url, params = {'q': keyword}).json()
+  # channel_names = []
+  # for h in channel_search_result['hits']:
+  #   channel_names.append(h['name'])
   
-  if len(channel_names) <= 2:
-    channel_names.append("")
-  else:
-    channel_names = [""]
+  # if len(channel_names) <= 2:
+  #   channel_names.append("")
+  # else:
+  #   channel_names = [""]
 
-  return channel_names
+  # return channel_names
+  return [""]
 
 
 def get_keyword_giphy(keyword, lang):
@@ -58,13 +59,14 @@ def get_giphy_image_from_translate(keyword, lang):
   payload['s'] = keyword
   url = 'http://api.giphy.com/v1/gifs/translate'
   response_body = requests.get(url, params = payload).json()
+  print(response_body)
   obj = response_body['data']
   return {
     'url': obj['images']['original']['url'],
     'height': obj['images']['original']['height'],
     'width': obj['images']['original']['width']
   }
-  
+
 '''
 Use GIPHY API to find the gif urls of the given words
 '''
