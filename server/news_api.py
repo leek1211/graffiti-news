@@ -12,7 +12,8 @@ def search_articles(keyword, lang):
         'url': a['url'],
         # 'content': a['content'],
         'source': a['source']['name'],
-        'title': a['title']
+        'title': a['title'],
+        'urlToImage': a['urlToImage']
       }
     )
   return ret
