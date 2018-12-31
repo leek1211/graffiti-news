@@ -1,3 +1,4 @@
+import traceback
 from flask import Flask
 from flask import request
 from flask import jsonify
@@ -17,9 +18,10 @@ def get_graffiti():
     if lang == None:
       lang = 'en'
 
-    trend_words = get_trend_words(lang)[:5]
+    trend_words = get_trend_words(lang)
     return jsonify(trends=get_gifs(trend_words, lang)), 200
   except:
+    traceback.print_exc()
     return jsonify(message = 'internal server error'), 500
 
 @app.route('/articles')
@@ -41,5 +43,6 @@ def get_articles():
     articles = search_articles(keyword, lang)
     return jsonify(images = images, articles=articles), 200
   except:
+    traceback.print_exc()
     return jsonify(message = 'internal server error'), 500
 

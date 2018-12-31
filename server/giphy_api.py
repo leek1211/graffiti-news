@@ -21,7 +21,6 @@ def get_keyword_giphy(keyword, lang):
   max_image_size = 10
   url = 'http://api.giphy.com/v1/gifs/search'
   payload = {
-    'api_key': GIPHY_API_KEY,
     'offset': 0,
     'limit': 10,
     'lang': lang,
@@ -37,6 +36,9 @@ def get_keyword_giphy(keyword, lang):
     
     payload['q'] = keyword + ' ' + chn
     # print('Sending request ', keyword)
+    global flag_idx
+    payload['api_key'] = GIPHY_API_KEY[flag_idx]
+    flag_idx = flag_idx ^ 1
     response_body = requests.get(url, params = payload).json()
     
     if response_body['data'] == None:
@@ -56,12 +58,14 @@ def get_keyword_giphy(keyword, lang):
 
 def get_giphy_image_from_translate(keyword, lang):
   payload = {
-    'api_key': GIPHY_API_KEY,
     'lang': lang,
   }
   payload['s'] = keyword
   url = 'http://api.giphy.com/v1/gifs/translate'
   # print('Sending request ', keyword)
+  global flag_idx
+  payload['api_key'] = GIPHY_API_KEY[flag_idx]
+  flag_idx = flag_idx ^ 1
   response_body = requests.get(url, params = payload).json()
   obj = response_body['data']
   return {
